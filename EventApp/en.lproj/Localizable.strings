@@ -55,3 +55,5 @@
 "error_title" = "Error!";
 "send_otp_failed" = "Failed to send verification code, try again.";
 "enter_otp_code" = "Please enter verification code.";
+"try_again" = "Try Again";
+"not_found_chat" = "Sorry, no one was found with your interests. Please try again.";
