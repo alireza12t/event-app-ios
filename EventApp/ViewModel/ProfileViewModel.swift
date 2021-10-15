@@ -85,7 +85,7 @@ class ProfileViewModel: ObservableObject {
                 return
             }
             self.statusView = .complete
-            self.repositories = repositories
+            self.repositories = repositories.user
         }
     }
 }
