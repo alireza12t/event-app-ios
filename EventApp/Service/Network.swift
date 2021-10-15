@@ -14,6 +14,31 @@ class Network {
     
     private(set) lazy var apollo: ApolloClient = {
         
+        let url = URL(string: Configuration.oldBaseUrl)!
+        
+        let documentsPath = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory,
+            .userDomainMask,
+            true).first!
+        let documentsURL = URL(fileURLWithPath: documentsPath)
+        let sqliteFileURL = documentsURL.appendingPathComponent("event_ios_app_apollo_db.sqlite")
+        
+        let sqliteCache = try! SQLiteNormalizedCache(fileURL: sqliteFileURL)
+        
+        let store = ApolloStore(cache: sqliteCache)
+        
+        let configuration = URLSessionConfiguration.default
+        
+        configuration.httpAdditionalHeaders = ["Application-Token": Configuration.token]
+
+        return ApolloClient(
+            networkTransport: HTTPNetworkTransport(url: url, client: URLSessionClient(sessionConfiguration: configuration, callbackQueue: nil)),
+            store: store
+        )
+    }()
+    
+    private(set) lazy var apolloNew: ApolloClient = {
+        
         let url = URL(string: Configuration.baseUrl)!
         
         let documentsPath = NSSearchPathForDirectoriesInDomains(
@@ -30,7 +55,7 @@ class Network {
         let configuration = URLSessionConfiguration.default
         
         configuration.httpAdditionalHeaders = ["Application-Token": Configuration.token]
-//        configuration.httpAdditionalHeaders = ["Authorization": DataManager.shared.token]
+        configuration.httpAdditionalHeaders = ["Authorization": DataManager.shared.token]
 
         return ApolloClient(
             networkTransport: HTTPNetworkTransport(url: url, client: URLSessionClient(sessionConfiguration: configuration, callbackQueue: nil)),
@@ -39,7 +64,7 @@ class Network {
     }()
     
     func fetch<Query: GraphQLQuery>(query: Query, completion: @escaping (Result<GraphQLResult<Query.Data>, Error>) -> (), cachePolicy: CachePolicy = .fetchIgnoringCacheCompletely) {
-        apollo.fetch(query: query,cachePolicy: cachePolicy) { result in
+        apolloNew.fetch(query: query,cachePolicy: cachePolicy) { result in
           switch result {
             case .failure(let error):
                 if let errorResponse = error as? GraphQLHTTPResponseError {
@@ -64,7 +89,7 @@ class Network {
     }
     
     func perform<Mutation: GraphQLMutation>(mutation: Mutation, completion: @escaping (Result<GraphQLResult<Mutation.Data>, Error>) -> (), cachePolicy: CachePolicy = .fetchIgnoringCacheCompletely) {
-        apollo.perform(mutation: mutation) { result in
+        apolloNew.perform(mutation: mutation) { result in
           switch result {
             case .failure(let error):
                 if let errorResponse = error as? GraphQLHTTPResponseError {
@@ -89,7 +114,7 @@ class Network {
     }
     
     func refreshToken(completion: @escaping (Bool) -> ()) {
-        apollo.perform(mutation: GetRefreshTokenMutation(refreshToken: DataManager.shared.refreshToken)) { result in
+        apolloNew.perform(mutation: GetRefreshTokenMutation(refreshToken: DataManager.shared.refreshToken)) { result in
           switch result {
             case .failure(_ ):
               completion(true)
