@@ -23,80 +23,75 @@ struct ProfileView: View {
     
     var body: some View {
         GeometryReader { geo in
-        //        if self.viewModel.statusView == .complete {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                    Color.gray
-                        .frame(width: geo.size.width, height: 200)
-                    
-                    Image("person")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: geo.size.width / 2, height: geo.size.width / 2, alignment: .center)
-                        .background(Color.blue)
-                        .cornerRadius(7)
-                        .padding(.top, -1 * (geo.size.width / 4))
-                
-                
-                Text(viewModel.firstName + " " + viewModel.lastName)
-                    .customFont(name: Configuration.shabnamBold, style: .title2, weight: .bold)
-                    .padding(.bottom, 20)
-                
-                interstsList
-                    .padding(.vertical, 5)
-                    .padding([.leading, .trailing], leadingTrailingPadding)
-                
-                jobView
-                
-                fieldView
-                
-                HStack {
-                    Text("My Story".localized())
-                        .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
-                    Spacer()
-                }
-                .padding(.top, 5)
-                .padding([.leading, .trailing], 40)
-                
-                LocalizedNumberText(viewModel.biography)
-                    .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
-                    .padding(.top, 5)
-                    .padding([.leading, .trailing], leadingTrailingPadding)
-                
-                HStack(alignment: .center) {
-                    phoneNumberView
-                        .padding(.trailing, 20)
-                    
-                    emailView
-                }
-                .padding(.top, 15)
-                .padding(.bottom, 30)
-                Button(action: {
-                    
-                }, label: {
-                    if isMyProfile {
-                        RoundButton("Update Profile".localized(), width: geo.size.width - 40, height: 62, alignment: .center)
-                    } else {
-                        RoundButton("Chat With".localized() + " " + viewModel.firstName, width: geo.size.width - 40, height: 62, alignment: .center)
+            if self.viewModel.statusView == .complete {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                            Color.gray
+                                .frame(width: geo.size.width, height: 200)
+                            
+                            Image("person")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: geo.size.width / 2, height: geo.size.width / 2, alignment: .center)
+                                .background(Color.blue)
+                                .cornerRadius(7)
+                                .padding(.top, -1 * (geo.size.width / 4))
+                        
+                        
+                        Text(viewModel.firstName + " " + viewModel.lastName)
+                            .customFont(name: Configuration.shabnamBold, style: .title2, weight: .bold)
+                            .padding(.bottom, 20)
+                        
+                        interstsList
+                            .padding(.vertical, 5)
+                            .padding([.leading, .trailing], leadingTrailingPadding)
+                        
+                        jobView
+                        
+                        fieldView
+                        
+                        HStack {
+                            Text("My Story".localized())
+                                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
+                            Spacer()
+                        }
+                        .padding(.top, 5)
+                        .padding([.leading, .trailing], 40)
+                        
+                        LocalizedNumberText(viewModel.biography)
+                            .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
+                            .padding(.top, 5)
+                            .padding([.leading, .trailing], leadingTrailingPadding)
+                        
+                        HStack(alignment: .center) {
+                            phoneNumberView
+                                .padding(.trailing, 20)
+                            
+                            emailView
+                        }
+                        .padding(.top, 15)
+                        .padding(.bottom, 30)
+                        Button(action: {
+                            
+                        }, label: {
+                            if isMyProfile {
+                                RoundButton("Update Profile".localized(), width: geo.size.width - 40, height: 62, alignment: .center)
+                            } else {
+                                RoundButton("Chat With".localized() + " " + viewModel.firstName, width: geo.size.width - 40, height: 62, alignment: .center)
+                            }
+                        })
                     }
-                })
+                    .frame(width: geo.size.width)
+                    .padding()
+                }
+            }else if self.viewModel.statusView == .loading{
+                Indicator()
+            }else if self.viewModel.statusView == .error {
+                ErrorView(errorText: self.viewModel.errorMessage)
+                    .onTapGesture {
+                        self.viewModel.setup()
+                    }
             }
-            .frame(width: geo.size.width)
-            .padding()
-        }
-        //        }
-        
-        
-        //        if self.viewModel.statusView == .loading {
-        //            Indicator()
-        //        }
-        //
-        //        if self.viewModel.statusView == .error {
-        //            ErrorView(errorText: self.viewModel.errorMessage)
-        //                .onTapGesture {
-        //                    self.viewModel.setup(withUserId: userId)
-        //                }
-        //        }
         }
     }
 }

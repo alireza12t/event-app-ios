@@ -21,14 +21,13 @@ struct LoginSetting {
 
 struct ProfileTabBar: View {
     
-    @State private var selectedTab: Int = 1
     @ObservedObject var userSettings = UserSettings()
-    
+    @State private var selectedTab: Int = 1
+
     var body: some View {
         if userSettings.loginSetting.token.isEmpty {
             if userSettings.loginSetting.loginToken.isEmpty {
-//                PhoneNumberView(loginSetting: $userSettings.loginSetting)
-                EditProfileView()
+                PhoneNumberView(loginSetting: $userSettings.loginSetting)
             } else {
                 OTPView(loginSetting: $userSettings.loginSetting)
             }

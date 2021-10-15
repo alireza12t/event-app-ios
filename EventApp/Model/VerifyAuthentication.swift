@@ -12,9 +12,10 @@ struct VerifyAuthentication: Codable {
     
     var success: Bool
     var errors: ErrorModel?
-//    var payload: PayLoad?
     var token, refreshToken: String?
     var refreshExpiresIn: Int?
+#warning("Fix after backend update")
+    var isProfileFilled: Bool? = false
 }
 
 struct PayLoad: Codable {

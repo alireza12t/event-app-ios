@@ -15,26 +15,27 @@ class OTPViewModel: ObservableObject {
     @Published var statusView: StatusView = .none
     @Published var code: String = ""
     
-    func login(token: String, completion: @escaping (String) -> Void) {
+    func login(token: String, completion: @escaping (String, Bool) -> Void) {
         self.statusView = .loading
         repo.sendOTP(token: token, code: code) { repository, exception  in
             
             if let error = exception {
                 self.statusView = .error
                 self.errorMessage = error.message
-                completion("")
+                completion("", false)
                 return
             }
             
             guard let repository = repository else {
                 self.statusView = .error
                 self.errorMessage = "Invalid Response Model"
-                completion("")
+                completion("", false)
                 return
             }
             DataManager.shared.refreshToken = repository.refreshToken!
             DataManager.shared.token = repository.token!
-            completion(repository.token!)
+            #warning("Fix after backend update")
+            completion(repository.token!, repository.isProfileFilled ?? false)
             self.statusView = .complete
         }
     }
