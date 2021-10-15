@@ -15,7 +15,8 @@ class ProfileViewModel: ObservableObject {
     
     @Published var errorMessage: String = ""
     @Published var statusView: StatusView = .none
-    
+    @Published var newUserProfile: ProfileMutationInput = ProfileMutationInput()
+
     var firstName: String {
         return repositories.firstName ?? ""
     }
@@ -70,4 +71,21 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
+    func updateProfile() {
+        self.statusView = .loading
+        repo.update(newPrrofile: newUserProfile) { repositories, exception  in
+            
+            if let error = exception {
+                self.statusView = .error
+                self.errorMessage = error.message
+                return
+            }
+            
+            guard let repositories = repositories else {
+                return
+            }
+            self.statusView = .complete
+            self.repositories = repositories
+        }
+    }
 }

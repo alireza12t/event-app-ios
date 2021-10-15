@@ -31,3 +31,13 @@ mutation GetRefreshToken($refreshToken: String!){
     refreshExpiresIn
   }
 }
+
+mutation UpdateProfile($input: ProfileMutationInput!) {
+  updateProfile(
+    input: $input
+  ) {
+    user {
+        id
+    }
+  }
+}

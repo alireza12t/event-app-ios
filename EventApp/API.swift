@@ -4,6 +4,115 @@
 import Apollo
 import Foundation
 
+public struct ProfileMutationInput: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  /// - Parameters:
+  ///   - email
+  ///   - firstName
+  ///   - lastName
+  ///   - jobTitle
+  ///   - educationField
+  ///   - biography
+  ///   - interests
+  ///   - linkedinId
+  ///   - id
+  ///   - clientMutationId
+  public init(email: Swift.Optional<String?> = nil, firstName: Swift.Optional<String?> = nil, lastName: Swift.Optional<String?> = nil, jobTitle: Swift.Optional<String?> = nil, educationField: Swift.Optional<String?> = nil, biography: Swift.Optional<String?> = nil, interests: Swift.Optional<[GraphQLID?]?> = nil, linkedinId: Swift.Optional<String?> = nil, id: Swift.Optional<GraphQLID?> = nil, clientMutationId: Swift.Optional<String?> = nil) {
+    graphQLMap = ["email": email, "firstName": firstName, "lastName": lastName, "jobTitle": jobTitle, "educationField": educationField, "biography": biography, "interests": interests, "linkedinId": linkedinId, "id": id, "clientMutationId": clientMutationId]
+  }
+
+  public var email: Swift.Optional<String?> {
+    get {
+      return graphQLMap["email"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "email")
+    }
+  }
+
+  public var firstName: Swift.Optional<String?> {
+    get {
+      return graphQLMap["firstName"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "firstName")
+    }
+  }
+
+  public var lastName: Swift.Optional<String?> {
+    get {
+      return graphQLMap["lastName"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "lastName")
+    }
+  }
+
+  public var jobTitle: Swift.Optional<String?> {
+    get {
+      return graphQLMap["jobTitle"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "jobTitle")
+    }
+  }
+
+  public var educationField: Swift.Optional<String?> {
+    get {
+      return graphQLMap["educationField"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "educationField")
+    }
+  }
+
+  public var biography: Swift.Optional<String?> {
+    get {
+      return graphQLMap["biography"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "biography")
+    }
+  }
+
+  public var interests: Swift.Optional<[GraphQLID?]?> {
+    get {
+      return graphQLMap["interests"] as? Swift.Optional<[GraphQLID?]?> ?? Swift.Optional<[GraphQLID?]?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "interests")
+    }
+  }
+
+  public var linkedinId: Swift.Optional<String?> {
+    get {
+      return graphQLMap["linkedinId"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "linkedinId")
+    }
+  }
+
+  public var id: Swift.Optional<GraphQLID?> {
+    get {
+      return graphQLMap["id"] as? Swift.Optional<GraphQLID?> ?? Swift.Optional<GraphQLID?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  public var clientMutationId: Swift.Optional<String?> {
+    get {
+      return graphQLMap["clientMutationId"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "clientMutationId")
+    }
+  }
+}
+
 public enum SectionType: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
   public typealias RawValue = String
   case generic
@@ -455,6 +564,141 @@ public final class GetRefreshTokenMutation: GraphQLMutation {
         }
         set {
           resultMap.updateValue(newValue, forKey: "refreshExpiresIn")
+        }
+      }
+    }
+  }
+}
+
+public final class UpdateProfileMutation: GraphQLMutation {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    mutation UpdateProfile($input: ProfileMutationInput!) {
+      updateProfile(input: $input) {
+        __typename
+        user {
+          __typename
+          id
+        }
+      }
+    }
+    """
+
+  public let operationName: String = "UpdateProfile"
+
+  public var input: ProfileMutationInput
+
+  public init(input: ProfileMutationInput) {
+    self.input = input
+  }
+
+  public var variables: GraphQLMap? {
+    return ["input": input]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Mutation"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("updateProfile", arguments: ["input": GraphQLVariable("input")], type: .object(UpdateProfile.selections)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(updateProfile: UpdateProfile? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "updateProfile": updateProfile.flatMap { (value: UpdateProfile) -> ResultMap in value.resultMap }])
+    }
+
+    public var updateProfile: UpdateProfile? {
+      get {
+        return (resultMap["updateProfile"] as? ResultMap).flatMap { UpdateProfile(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "updateProfile")
+      }
+    }
+
+    public struct UpdateProfile: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["ProfileMutationPayload"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("user", type: .object(User.selections)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(user: User? = nil) {
+        self.init(unsafeResultMap: ["__typename": "ProfileMutationPayload", "user": user.flatMap { (value: User) -> ResultMap in value.resultMap }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var user: User? {
+        get {
+          return (resultMap["user"] as? ResultMap).flatMap { User(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "user")
+        }
+      }
+
+      public struct User: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["UserNode"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(id: GraphQLID) {
+          self.init(unsafeResultMap: ["__typename": "UserNode", "id": id])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
         }
       }
     }

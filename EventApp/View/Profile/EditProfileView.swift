@@ -10,6 +10,8 @@ import SwiftUI
 
 struct EditProfileView: View {
  
+    @ObservedObject var viewModel = ProfileViewModel()
+
     var body: some View {
         
         VStack {
