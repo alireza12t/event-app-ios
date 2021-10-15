@@ -32,11 +32,11 @@ struct ProfileTabBar: View {
                 OTPView(loginSetting: $userSettings.loginSetting)
             }
         } else {
-//            if userSettings.loginSetting.isProfileFilled {
+            if userSettings.loginSetting.isProfileFilled {
                 tabBarView
-//            } else {
-//                EditProfileView()
-//            }
+            } else {
+                EditProfileView()
+            }
         }
     }
 }

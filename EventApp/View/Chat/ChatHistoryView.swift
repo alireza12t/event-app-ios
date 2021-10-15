@@ -11,7 +11,7 @@ import struct Kingfisher.KFImage
 
 struct ChatHistoryView: View {
     
-    let profiles = [ProfileData.example, ProfileData.example, ProfileData.example, ProfileData.example, ProfileData.example, ProfileData.example, ProfileData.example]
+    let profiles = [ProfileData.example]
     let chatHitory = ChatHistory.exampleList
     
     var body: some View {

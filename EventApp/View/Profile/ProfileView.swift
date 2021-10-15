@@ -23,54 +23,79 @@ struct ProfileView: View {
     
     var body: some View {
         GeometryReader { geo in
+            let imageHeight: CGFloat = geo.size.width / 3
             if self.viewModel.statusView == .complete {
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 20) {
-                            Color.gray
-                                .frame(width: geo.size.width, height: 200)
-                            
+                        VStack {
+                            LinearGradient(gradient: Gradient(colors: [.red, .red, .red.opacity(0.5)]), startPoint: .leading, endPoint: .trailing)
+                                .frame(width: geo.size.width, height: imageHeight - 20)
                             Image("person")
                                 .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: geo.size.width / 2, height: geo.size.width / 2, alignment: .center)
-                                .background(Color.blue)
-                                .cornerRadius(7)
-                                .padding(.top, -1 * (geo.size.width / 4))
-                        
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: imageHeight, height: imageHeight, alignment: .center)
+                                .cornerRadius(10)
+                                .padding(.top, -(imageHeight - 20))
+                        }
+                            .frame(width: geo.size.width)
                         
                         Text(viewModel.firstName + " " + viewModel.lastName)
                             .customFont(name: Configuration.shabnamBold, style: .title2, weight: .bold)
                             .padding(.bottom, 20)
                         
                         interstsList
-                            .padding(.vertical, 5)
                             .padding([.leading, .trailing], leadingTrailingPadding)
                         
-                        jobView
+                        HStack {
+                            Text("Job Title".localized() + ": ")
+                                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
+                            
+                            Text(viewModel.jobTitle.normalNumber)
+                                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .regular)
+                            Spacer()
+                        }
+                        .padding([.leading, .trailing], leadingTrailingPadding)
                         
-                        fieldView
+                        HStack {
+                            Text("Field".localized() + ": ")
+                                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
+                            
+                            Text(viewModel.educationField.normalNumber)
+                                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .regular)
+                            Spacer()
+                        }
+                        .padding([.leading, .trailing], leadingTrailingPadding)
                         
                         HStack {
                             Text("My Story".localized())
                                 .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
                             Spacer()
                         }
-                        .padding(.top, 5)
                         .padding([.leading, .trailing], 40)
                         
-                        LocalizedNumberText(viewModel.biography)
+                        Text(viewModel.biography.normalNumber)
                             .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
                             .padding(.top, 5)
                             .padding([.leading, .trailing], leadingTrailingPadding)
                         
-                        HStack(alignment: .center) {
-                            phoneNumberView
-                                .padding(.trailing, 20)
+                        HStack(alignment: .center, spacing: 20) {
+                            HStack {
+                                Image(systemName: "phone")
+                                    .foregroundColor(.black)
+                                
+                                LocalizedNumberText(viewModel.phoneNumber)
+                                    .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
+                                
+                            }
                             
-                            emailView
+                            HStack {
+                                Image(systemName: "envelope")
+                                    .foregroundColor(.black)
+                                Text(viewModel.email)
+                                    .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
+                            }
                         }
-                        .padding(.top, 15)
-                        .padding(.bottom, 30)
+                        
                         Button(action: {
                             
                         }, label: {
@@ -82,12 +107,13 @@ struct ProfileView: View {
                         })
                     }
                     .frame(width: geo.size.width)
-                    .padding()
                 }
             }else if self.viewModel.statusView == .loading{
                 Indicator()
+                    .frame(width: geo.size.width, height: geo.size.height)
             }else if self.viewModel.statusView == .error {
                 ErrorView(errorText: self.viewModel.errorMessage)
+                    .frame(width: geo.size.width, height: geo.size.height)
                     .onTapGesture {
                         self.viewModel.setup()
                     }
@@ -97,52 +123,6 @@ struct ProfileView: View {
 }
 
 extension ProfileView {
-    private var emailView: some View {
-        HStack {
-            Image(systemName: "envelope")
-                .foregroundColor(.black)
-            Text(viewModel.email)
-                .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
-        }
-    }
-    
-    private var phoneNumberView: some View {
-        HStack {
-            Image(systemName: "phone")
-                .foregroundColor(.black)
-            
-            LocalizedNumberText(viewModel.phoneNumber)
-                .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
-            
-        }
-    }
-    
-    private var jobView: some View {
-        HStack {
-            Text("Job Title".localized() + ": ")
-                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
-            
-            LocalizedNumberText(viewModel.jobTitle)
-                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .regular)
-            Spacer()
-        }
-        .padding(.top, 5)
-        .padding([.leading, .trailing], leadingTrailingPadding)
-    }
-    
-    private var fieldView: some View {
-        HStack {
-            Text("Field".localized() + ": ")
-                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
-            
-            LocalizedNumberText(viewModel.educationField)
-                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .regular)
-            Spacer()
-        }
-        .padding(.top, 5)
-        .padding([.leading, .trailing], leadingTrailingPadding)
-    }
-    
     private var interstsList: some View {
         
         func generateContent(in g: GeometryProxy) -> some View {
