@@ -180,6 +180,7 @@ query GetUserProfile{
             id
             name
         }
+        doesNeedProfileUpdate
         pk
     }
 }

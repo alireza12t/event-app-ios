@@ -2988,6 +2988,7 @@ public final class GetUserProfileQuery: GraphQLQuery {
           id
           name
         }
+        doesNeedProfileUpdate
         pk
       }
     }
@@ -3045,6 +3046,7 @@ public final class GetUserProfileQuery: GraphQLQuery {
           GraphQLField("biography", type: .scalar(String.self)),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
           GraphQLField("interests", type: .nonNull(.list(.nonNull(.object(Interest.selections))))),
+          GraphQLField("doesNeedProfileUpdate", type: .scalar(Bool.self)),
           GraphQLField("pk", type: .scalar(Int.self)),
         ]
       }
@@ -3055,8 +3057,8 @@ public final class GetUserProfileQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public init(lastLogin: String? = nil, dateJoined: String, isStaff: Bool, isActive: Bool, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String, jobTitle: String? = nil, educationField: String? = nil, biography: String? = nil, id: GraphQLID, interests: [Interest], pk: Int? = nil) {
-        self.init(unsafeResultMap: ["__typename": "UserNode", "lastLogin": lastLogin, "dateJoined": dateJoined, "isStaff": isStaff, "isActive": isActive, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "jobTitle": jobTitle, "educationField": educationField, "biography": biography, "id": id, "interests": interests.map { (value: Interest) -> ResultMap in value.resultMap }, "pk": pk])
+      public init(lastLogin: String? = nil, dateJoined: String, isStaff: Bool, isActive: Bool, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String, jobTitle: String? = nil, educationField: String? = nil, biography: String? = nil, id: GraphQLID, interests: [Interest], doesNeedProfileUpdate: Bool? = nil, pk: Int? = nil) {
+        self.init(unsafeResultMap: ["__typename": "UserNode", "lastLogin": lastLogin, "dateJoined": dateJoined, "isStaff": isStaff, "isActive": isActive, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "jobTitle": jobTitle, "educationField": educationField, "biography": biography, "id": id, "interests": interests.map { (value: Interest) -> ResultMap in value.resultMap }, "doesNeedProfileUpdate": doesNeedProfileUpdate, "pk": pk])
       }
 
       public var __typename: String {
@@ -3182,6 +3184,15 @@ public final class GetUserProfileQuery: GraphQLQuery {
         }
         set {
           resultMap.updateValue(newValue.map { (value: Interest) -> ResultMap in value.resultMap }, forKey: "interests")
+        }
+      }
+
+      public var doesNeedProfileUpdate: Bool? {
+        get {
+          return resultMap["doesNeedProfileUpdate"] as? Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "doesNeedProfileUpdate")
         }
       }
 
