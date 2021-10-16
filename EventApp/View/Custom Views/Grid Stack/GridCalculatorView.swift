@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct GridCalculator {
+struct GridCalculatorView {
     typealias GridDefinition = (
         columnWidth: CGFloat,
         columnCount: Int

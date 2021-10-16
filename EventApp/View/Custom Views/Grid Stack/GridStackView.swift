@@ -8,13 +8,13 @@
 import SwiftUI
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-public struct GridStack<Content>: View where Content: View {
+public struct GridStackView<Content>: View where Content: View {
     private let minCellWidth: CGFloat
     private let spacing: CGFloat
     private let numItems: Int
     private let alignment: HorizontalAlignment
     private let content: (Int, CGFloat) -> Content
-    private let gridCalculator = GridCalculator()
+    private let gridCalculator = GridCalculatorView()
     
     public init(
         minCellWidth: CGFloat,
@@ -68,14 +68,14 @@ private struct InnerGrid<Content>: View where Content: View {
         items: [Int],
         alignment: HorizontalAlignment = .leading,
         @ViewBuilder content: @escaping (Int, CGFloat) -> Content,
-        gridDefinition: GridCalculator.GridDefinition
+        gridDefinition: GridCalculatorView.GridDefinition
     ) {
         self.width = width
         self.spacing = spacing
         self.alignment = alignment
         self.content = content
         self.columnWidth = gridDefinition.columnWidth
-        rows = items.chunked(into: gridDefinition.columnCount)
+        rows = items.chunked(to: max(2, gridDefinition.columnCount))
     }
     
     var body : some View {

@@ -17,7 +17,7 @@ struct GalleryDetailView: View {
     
     var body: some View {
         ZStack {
-            GridStack(minCellWidth: (UIScreen.main.bounds.width/3) - 20, spacing: 15, numItems: viewModel.repositories.count) { index, cellWidth in
+            GridStackView(minCellWidth: (UIScreen.main.bounds.width/3) - 20, spacing: 15, numItems: viewModel.repositories.count) { index, cellWidth in
                 NavigationLink(destination:
                                 KFImage(URL(string: Images.urlExtension + self.viewModel.repositories[index].thumbnail)!)
                                 .placeholder {

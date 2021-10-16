@@ -22,14 +22,14 @@ struct ProfileView: View {
     }
     
     var body: some View {
-        GeometryReader { geo in
-            let imageHeight: CGFloat = geo.size.width / 3
+        let width = UIScreen.main.bounds.width
+        let imageHeight = width/3
             if self.viewModel.statusView == .complete {
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 20) {
                         VStack {
                             LinearGradient(gradient: Gradient(colors: [.red, .red, .red.opacity(0.5)]), startPoint: .leading, endPoint: .trailing)
-                                .frame(width: geo.size.width, height: imageHeight - 20)
+                                .frame(width: width, height: imageHeight - 20)
                             Image("person")
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
@@ -37,88 +37,80 @@ struct ProfileView: View {
                                 .cornerRadius(10)
                                 .padding(.top, -(imageHeight - 20))
                         }
-                            .frame(width: geo.size.width)
-                        
-                        Text(viewModel.firstName + " " + viewModel.lastName)
-                            .customFont(name: Configuration.shabnamBold, style: .title2, weight: .bold)
-                            .padding(.bottom, 20)
-                        
-                        interstsList
-                            .padding([.leading, .trailing], leadingTrailingPadding)
-                        
-                        HStack {
-                            Text("Job Title".localized() + ": ")
-                                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
+                            .frame(width: width)
+                        VStack(spacing: 15) {
+                            Text(viewModel.firstName + " " + viewModel.lastName)
+                                .customFont(name: Configuration.shabnamBold, style: .title2, weight: .bold)
                             
-                            Text(viewModel.jobTitle.normalNumber)
-                                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .regular)
-                            Spacer()
-                        }
-                        .padding([.leading, .trailing], leadingTrailingPadding)
-                        
-                        HStack {
-                            Text("Field".localized() + ": ")
-                                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
+                            interstsList
                             
-                            Text(viewModel.educationField.normalNumber)
-                                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .regular)
-                            Spacer()
-                        }
-                        .padding([.leading, .trailing], leadingTrailingPadding)
-                        
-                        HStack {
-                            Text("My Story".localized())
-                                .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
-                            Spacer()
+                            HStack {
+                                Text("Job Title".localized() + ": ")
+                                    .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
+                                
+                                Text(viewModel.jobTitle.normalNumber)
+                                    .customFont(name: Configuration.shabnamBold, style: .headline, weight: .regular)
+                                Spacer()
+                            }
+                            
+                            HStack {
+                                Text("Field".localized() + ": ")
+                                    .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
+                                
+                                Text(viewModel.educationField.normalNumber)
+                                    .customFont(name: Configuration.shabnamBold, style: .headline, weight: .regular)
+                                Spacer()
+                            }
+                            
+                            HStack {
+                                Text("My Story".localized())
+                                    .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
+                                Spacer()
+                            }
+                            
+                            Text(viewModel.biography.normalNumber)
+                                .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
+                            
+                            HStack(alignment: .center, spacing: 20) {
+                                HStack {
+                                    Image(systemName: "phone")
+                                        .foregroundColor(.black)
+                                    
+                                    LocalizedNumberText(viewModel.phoneNumber)
+                                        .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
+                                    
+                                }
+                                
+                                HStack {
+                                    Image(systemName: "envelope")
+                                        .foregroundColor(.black)
+                                    Text(viewModel.email)
+                                        .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
+                                }
+                            }
+                            
+                            Button(action: {
+                                
+                            }, label: {
+                                if isMyProfile {
+                                    RoundButton("Update Profile".localized(), width: width - 40, height: 62, alignment: .center)
+                                } else {
+                                    RoundButton("Chat With".localized() + " " + viewModel.firstName, width: width - 40, height: 62, alignment: .center)
+                                }
+                            })
                         }
                         .padding([.leading, .trailing], 40)
-                        
-                        Text(viewModel.biography.normalNumber)
-                            .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
-                            .padding(.top, 5)
-                            .padding([.leading, .trailing], leadingTrailingPadding)
-                        
-                        HStack(alignment: .center, spacing: 20) {
-                            HStack {
-                                Image(systemName: "phone")
-                                    .foregroundColor(.black)
-                                
-                                LocalizedNumberText(viewModel.phoneNumber)
-                                    .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
-                                
-                            }
-                            
-                            HStack {
-                                Image(systemName: "envelope")
-                                    .foregroundColor(.black)
-                                Text(viewModel.email)
-                                    .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
-                            }
-                        }
-                        
-                        Button(action: {
-                            
-                        }, label: {
-                            if isMyProfile {
-                                RoundButton("Update Profile".localized(), width: geo.size.width - 40, height: 62, alignment: .center)
-                            } else {
-                                RoundButton("Chat With".localized() + " " + viewModel.firstName, width: geo.size.width - 40, height: 62, alignment: .center)
-                            }
-                        })
                     }
-                    .frame(width: geo.size.width)
+                    
                 }
             }else if self.viewModel.statusView == .loading{
                 Indicator()
-                    .frame(width: geo.size.width, height: geo.size.height)
             }else if self.viewModel.statusView == .error {
                 ErrorView(errorText: self.viewModel.errorMessage)
-                    .frame(width: geo.size.width, height: geo.size.height)
                     .onTapGesture {
                         self.viewModel.setup()
                     }
             }
-        }
     }
 }
 

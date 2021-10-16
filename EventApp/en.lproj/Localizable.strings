@@ -57,3 +57,5 @@
 "enter_otp_code" = "Please enter verification code.";
 "try_again" = "Try Again";
 "not_found_chat" = "Sorry, no one was found with your interests. Please try again.";
+"search_person_title" = "Search Person";
+"search_person_subtitle" = "Finding someone with common interest for talking";
