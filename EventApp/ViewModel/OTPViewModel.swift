@@ -34,8 +34,7 @@ class OTPViewModel: ObservableObject {
             }
             DataManager.shared.refreshToken = repository.refreshToken!
             DataManager.shared.token = repository.token!
-            #warning("Fix after backend update")
-            completion(repository.token!, repository.isProfileFilled ?? false)
+            completion(repository.token!, repository.user.doesNeedProfileUpdate)
             self.statusView = .complete
         }
     }

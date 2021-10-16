@@ -14,8 +14,7 @@ struct VerifyAuthentication: Codable {
     var errors: ErrorModel?
     var token, refreshToken: String?
     var refreshExpiresIn: Int?
-#warning("Fix after backend update")
-    var isProfileFilled: Bool? = false
+    var user: ProfileData
 }
 
 struct PayLoad: Codable {

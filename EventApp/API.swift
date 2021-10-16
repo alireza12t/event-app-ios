@@ -295,6 +295,10 @@ public final class GetVerifyAuthenticationMutation: GraphQLMutation {
         token
         refreshToken
         refreshExpiresIn
+        user {
+          __typename
+          doesNeedProfileUpdate
+        }
       }
     }
     """
@@ -352,6 +356,7 @@ public final class GetVerifyAuthenticationMutation: GraphQLMutation {
           GraphQLField("token", type: .scalar(String.self)),
           GraphQLField("refreshToken", type: .scalar(String.self)),
           GraphQLField("refreshExpiresIn", type: .scalar(Int.self)),
+          GraphQLField("user", type: .object(User.selections)),
         ]
       }
 
@@ -361,8 +366,8 @@ public final class GetVerifyAuthenticationMutation: GraphQLMutation {
         self.resultMap = unsafeResultMap
       }
 
-      public init(success: Bool? = nil, errors: String? = nil, token: String? = nil, refreshToken: String? = nil, refreshExpiresIn: Int? = nil) {
-        self.init(unsafeResultMap: ["__typename": "VerifyAuthentication", "success": success, "errors": errors, "token": token, "refreshToken": refreshToken, "refreshExpiresIn": refreshExpiresIn])
+      public init(success: Bool? = nil, errors: String? = nil, token: String? = nil, refreshToken: String? = nil, refreshExpiresIn: Int? = nil, user: User? = nil) {
+        self.init(unsafeResultMap: ["__typename": "VerifyAuthentication", "success": success, "errors": errors, "token": token, "refreshToken": refreshToken, "refreshExpiresIn": refreshExpiresIn, "user": user.flatMap { (value: User) -> ResultMap in value.resultMap }])
       }
 
       public var __typename: String {
@@ -416,6 +421,54 @@ public final class GetVerifyAuthenticationMutation: GraphQLMutation {
         }
         set {
           resultMap.updateValue(newValue, forKey: "refreshExpiresIn")
+        }
+      }
+
+      public var user: User? {
+        get {
+          return (resultMap["user"] as? ResultMap).flatMap { User(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "user")
+        }
+      }
+
+      public struct User: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["UserNode"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("doesNeedProfileUpdate", type: .scalar(Bool.self)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(doesNeedProfileUpdate: Bool? = nil) {
+          self.init(unsafeResultMap: ["__typename": "UserNode", "doesNeedProfileUpdate": doesNeedProfileUpdate])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var doesNeedProfileUpdate: Bool? {
+          get {
+            return resultMap["doesNeedProfileUpdate"] as? Bool
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "doesNeedProfileUpdate")
+          }
         }
       }
     }

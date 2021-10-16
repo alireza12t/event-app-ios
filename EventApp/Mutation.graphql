@@ -16,6 +16,9 @@ mutation GetVerifyAuthentication($token: String!, $code: String!) {
     token
     refreshToken
     refreshExpiresIn
+    user {
+        doesNeedProfileUpdate
+    }
   }
 }
 

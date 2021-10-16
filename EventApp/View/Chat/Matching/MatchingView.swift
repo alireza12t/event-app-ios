@@ -14,8 +14,9 @@ struct MatchingView: View {
     
     var body: some View {
         GeometryReader { geo in
+            let spacing: CGFloat = 8
             if self.viewModel.statusView == .complete {
-                GridStackView(minCellWidth: (geo.size.width - 50)/2, spacing: 10, numItems: viewModel.repositories.count + 1, alignment: .center) { index, cellWidth in
+                GridStackView(minCellWidth: (geo.size.width  - spacing)/2 - 32, spacing: spacing, numItems: viewModel.repositories.count + 1, alignment: .center) { index, cellWidth in
                     if index == 0 {
                         MatchViewItem(width: cellWidth, image: UIImage(named: "plus")!, title: "search_person_title".localized(), subtitle: "search_person_subtitle".localized(), details: "")
                     } else {

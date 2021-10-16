@@ -28,25 +28,22 @@ struct MatchViewItem: View {
                 
                 Text(title)
                     .bold()
-                    .foregroundColor(Colors.primaryBarBackground)
-                
-                
-                Text(subtitle)
-                    .font(.headline)
-                    .foregroundColor(Color.black)
-                
-                Text(subtitle)
-                    .font(.subheadline)
-                    .foregroundColor(Colors.darkTextColor)
+                    .foregroundColor(Colors.textColor)
 
                 
+                Text(subtitle)
+                    .font(.body)
+                    .foregroundColor(Colors.textColor)
+
+                Text(details)
+                    .font(.footnote)
+                    .foregroundColor(Colors.textColor)
             }
-            .padding(20)
+            .padding(15)
             .frame(width: width, height: 1.5*width, alignment: .center)
             .background(Colors.primaryBackground)
             .cornerRadius(7)
             .shadow(color: Color(.lightGray).opacity(0.3), radius: 7, x: 0, y: 0)
-            .padding(15)
     }
 }
 
