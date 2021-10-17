@@ -57,7 +57,7 @@ struct EditProfileView: View {
                             .fontWeight(.bold)
                             .multilineTextAlignment(.trailing)
                     }
-                    TagView(tags: ["aq", "bssds", "bcccccc","asd", "bssds", "bcsccccc"])
+                    TagView(tags: [TagViewItem(title: "ff", isSelected: false), TagViewItem(title: "yyhuuuh", isSelected: false), TagViewItem(title: "kjhgdtfyughuihu", isSelected: true), TagViewItem(title: "nbyvyvuyv", isSelected: false)])
                     inputFields()
                     Button(action: {
                         // MARK: Button Action
