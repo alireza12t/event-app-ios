@@ -11,7 +11,7 @@ import Foundation
 class MatchingViewModel: ObservableObject {
     
     var repo = MatchingRepository()
-    @Published var repositories = [ProfileData.example]
+    @Published var repositories = []
     
     @Published var errorMessage: String = ""
     @Published var statusView: StatusView = .none

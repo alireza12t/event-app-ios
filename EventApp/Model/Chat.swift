@@ -37,12 +37,7 @@ struct ChatHistory: Decodable, Hashable {
   
   static var exampleList: [ChatHistory] {
     [
-        ChatHistory(firstName: "مهدی", lastName: "درویشی", lastMessage: Message.exampleMessage2, id: "kkddhhkd", newMessages: 0, image: "https://sobarnes.com/wp-content/uploads/2021/06/ludmilla-makowski-copie-620x420.jpg" ),
-        ChatHistory(firstName: "احمد", lastName: "ترکاشوند", lastMessage: Message.exampleMessage1, id: "dofjfd", newMessages: 3, image: "https://sobarnes.com/wp-content/uploads/2021/06/ludmilla-makowski-copie-620x420.jpg" ),
-        ChatHistory(firstName: "احمد", lastName: "سلطانی", lastMessage: Message.exampleMessage2, id: "shdskds", newMessages: 5, image: "https://sobarnes.com/wp-content/uploads/2021/06/ludmilla-makowski-copie-620x420.jpg" ),
-        ChatHistory(firstName: "علی", lastName: "جباری", lastMessage: Message.exampleMessage2, id: "sdkhhss", newMessages: 0, image: "https://sobarnes.com/wp-content/uploads/2021/06/ludmilla-makowski-copie-620x420.jpg" ),
-        ChatHistory(firstName: "عباس", lastName: "مدنی", lastMessage: Message.exampleMessage1, id: "jshjjdshjddjshd", newMessages: 0, image: "https://sobarnes.com/wp-content/uploads/2021/06/ludmilla-makowski-copie-620x420.jpg" ),
-        ChatHistory(firstName: "طاده", lastName: "سالاری", lastMessage: Message.exampleMessage1, id: "fji", newMessages: 3, image: "https://sobarnes.com/wp-content/uploads/2021/06/ludmilla-makowski-copie-620x420.jpg" ),
+        ChatHistory(firstName: "عبدالله", lastName: "درویشی", lastMessage: Message.exampleMessage2, id: "1", newMessages: 0, image: "https://sobarnes.com/wp-content/uploads/2021/06/ludmilla-makowski-copie-620x420.jpg" )
     ]
   }
 }

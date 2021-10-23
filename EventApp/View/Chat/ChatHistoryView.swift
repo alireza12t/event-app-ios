@@ -80,15 +80,20 @@ struct ChatHistoryChatCell: View {
 }
 
 struct ChatHistoryProfileHorizontalList: View {
+    
     let height =  10 + UIScreen.main.bounds.width / 4
     var profiles: [ProfileData]
+    @State private var isActive = false
+    
     var body: some View {
         GeometryReader { geometry in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(profiles, id: \.self) { profile in
-                        ChatHistoryCell(profile: profile)
-                            .padding(.horizontal, 5)
+                        NavigationLink(destination: MatchingView()) {
+                                ChatHistoryCell(profile: profile)
+                                    .padding(.horizontal, 5)
+                            }
                     }
                     ChatHistoryCell(profile: ProfileData.example)
                 }

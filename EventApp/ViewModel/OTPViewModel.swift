@@ -34,7 +34,7 @@ class OTPViewModel: ObservableObject {
             }
             DataManager.shared.refreshToken = repository.refreshToken!
             DataManager.shared.token = repository.token!
-            completion(repository.token!, repository.user.doesNeedProfileUpdate)
+            completion(repository.token!, repository.user.doesNeedProfileUpdate ?? false)
             self.statusView = .complete
         }
     }

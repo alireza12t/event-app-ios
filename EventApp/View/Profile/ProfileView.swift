@@ -7,11 +7,13 @@
 //
 
 import SwiftUI
+import NavigationStack
 
 struct ProfileView: View {
     
     @ObservedObject var viewModel = ProfileViewModel()
-    
+    @State private var isActive = false
+
     var userId: String
     var leadingTrailingPadding: CGFloat = 40
     var isMyProfile: Bool = true
@@ -38,15 +40,18 @@ struct ProfileView: View {
                                 .padding(.top, -(imageHeight - 20))
                         }
                             .frame(width: width)
-                        VStack(spacing: 15) {
+                        
+                        VStack(spacing: 20) {
                             Text(viewModel.firstName + " " + viewModel.lastName)
-                                .customFont(name: Configuration.shabnamBold, style: .title2, weight: .bold)
+                                .font(.footnote)
+                                .bold()
                             
-                            interstsList
+                            TagView(tags: viewModel.interestList.compactMap({$0.name}))
                             
                             HStack {
                                 Text("Job Title".localized() + ": ")
-                                    .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
+                                    .font(.footnote)
+                                    .bold()
                                 
                                 Text(viewModel.jobTitle.normalNumber)
                                     .customFont(name: Configuration.shabnamBold, style: .headline, weight: .regular)
@@ -55,7 +60,8 @@ struct ProfileView: View {
                             
                             HStack {
                                 Text("Field".localized() + ": ")
-                                    .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
+                                    .font(.footnote)
+                                    .bold()
                                 
                                 Text(viewModel.educationField.normalNumber)
                                     .customFont(name: Configuration.shabnamBold, style: .headline, weight: .regular)
@@ -64,7 +70,8 @@ struct ProfileView: View {
                             
                             HStack {
                                 Text("My Story".localized())
-                                    .customFont(name: Configuration.shabnamBold, style: .headline, weight: .bold)
+                                    .font(.footnote)
+                                    .bold()
                                 Spacer()
                             }
                             
@@ -88,18 +95,21 @@ struct ProfileView: View {
                                         .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
                                 }
                             }
+                            .padding()
                             
-                            Button(action: {
-                                
-                            }, label: {
-                                if isMyProfile {
-                                    RoundButton("Update Profile".localized(), width: width - 40, height: 62, alignment: .center)
-                                } else {
-                                    RoundButton("Chat With".localized() + " " + viewModel.firstName, width: width - 40, height: 62, alignment: .center)
-                                }
-                            })
+                            PushView(destination: EditProfileView(), isActive: $isActive) {
+                                Button(action: {
+                                    self.isActive.toggle()
+                                }, label: {
+                                    if isMyProfile {
+                                        RoundButton("Update Profile".localized(), width: width - 40, height: 62, alignment: .center)
+                                    } else {
+                                        RoundButton("Chat With".localized() + " " + viewModel.firstName, width: width - 40, height: 62, alignment: .center)
+                                    }
+                                })
+                            }
                         }
-                        .padding([.leading, .trailing], 40)
+                        .padding( 40)
                     }
                     
                 }
@@ -111,59 +121,6 @@ struct ProfileView: View {
                         self.viewModel.setup()
                     }
             }
-    }
-}
-
-extension ProfileView {
-    private var interstsList: some View {
-        
-        func generateContent(in g: GeometryProxy) -> some View {
-            var width = CGFloat.zero
-            var height = CGFloat.zero
-            return ZStack(alignment: .topLeading) {
-                ForEach(viewModel.interestList, id: \.self) { platform in
-                    item(for: platform.name)
-                        .padding(4)
-                        .alignmentGuide(.leading, computeValue: { d in
-                            if (abs(width - d.width) > g.size.width) {
-                                width = 0
-                                height -= d.height
-                            }
-                            let result = width
-                            if platform == viewModel.interestList.last! {
-                                width = 0 //last item
-                            } else {
-                                width -= d.width
-                            }
-                            return result
-                        })
-                        .alignmentGuide(.top, computeValue: {d in
-                            let result = height
-                            if platform == viewModel.interestList.last! {
-                                height = 0 // last item
-                            }
-                            return result
-                        })
-                }
-            }
-        }
-        
-        func item(for text: String) -> some View {
-            Text(text)
-                .foregroundColor(.white)
-                .padding()
-                .lineLimit(1)
-                .frame(height: 36)
-                .background(Colors.primaryBlue)
-                .cornerRadius(18)
-        }
-        
-        return VStack {
-            let sectionHeight = CGFloat(viewModel.repositories.interests?.compactMap({$0.name}).joined().count ?? 0) * 2
-            GeometryReader { geometry in
-                generateContent(in: geometry)
-            }.frame(height: sectionHeight)
-        }
     }
 }
 

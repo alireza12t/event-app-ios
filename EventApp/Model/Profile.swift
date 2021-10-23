@@ -26,7 +26,7 @@ struct ProfileData: Codable, Hashable {
     var interests: [InterestType]?
     var image: String?
     var pk: Int?
-    var doesNeedProfileUpdate: Bool
+    var doesNeedProfileUpdate: Bool?
     
     static var example: ProfileData {
         ProfileData(lastLogin: "", dateJoined: "", isStaff: false, isActive: true, firstName: "علیرضا", lastName: "طغیانی", email: "alirreza@gmail.com", phone: "09202072717", jobTitle: "برنامه نویس iOS و فلان", educationField: "کارشناسیی علوم کامپیوتر", biography: "،پاچ تعنص زا موهفمان یگداس دیلوت اب یگتخاس نتم موسپیا مرو همانزور هکلب نوتم و اهرگپاچ ،تسا کیفارگ ناحارط زا هدافتسا اب  .هگید نیمه مزال هک نانچنآرطس و نوتس رد هلجم و", id: "dkjdk", interests: InterestType.exampleList, pk: 0, doesNeedProfileUpdate: false)
@@ -45,27 +45,17 @@ struct InterestType: Codable, Hashable {
     }
     
     static var shortExample: InterestType {
-        InterestType(id: "sdjd", name: "interest")
+        InterestType(id: "sdjd", name: "iOS Development")
     }
     
     static var longExample: InterestType {
-        InterestType(id: "sddjksd", name: "interest interest interest")
+        InterestType(id: "sddjksd", name: "Businesses")
     }
     
     static var exampleList: [InterestType] {
         [
             shortExample,
-            shortExample,
-            shortExample,
             longExample,
-            shortExample,
-            shortExample,
-            shortExample,
-            shortExample,
-            longExample,
-            longExample,
-            longExample,
-            shortExample
         ]
     }
 }
