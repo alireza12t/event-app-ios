@@ -14,8 +14,8 @@ enum AppLanguage: String {
 }
 
 class Configuration {
-    internal static let baseUrl = "https://event-app-core.tedxtehran.com/graphql/"
     internal static let oldBaseUrl = "https://tedxtehran.idearun.co/graphql/"
+    internal static let baseUrl = "https://event-app-core.tedxtehran.com/graphql/"
     internal static let placeholderUrl = "https://tedxtehran.com/"
     internal static let acknowledgmentsUrl = "https://trello.com/b/9Vp84PlW"
     
@@ -37,6 +37,17 @@ class Configuration {
                 return "7b9c5f16-0882-4334-a828-e67ce8ccf201"
             case .en:
                 return "56fe1591-c5c1-4113-aba3-73fca1f5aacd"
+            }
+        }
+    }
+    
+    internal static var isLanguageRTL: Bool {
+        get {
+            switch Configuration.appLanguage {
+            case .fa, .faIR:
+                return true
+            case .en:
+                return false
             }
         }
     }

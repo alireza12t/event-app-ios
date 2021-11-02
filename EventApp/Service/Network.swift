@@ -13,9 +13,7 @@ class Network {
     static let shared = Network()
     
     private(set) lazy var apollo: ApolloClient = {
-        
-        let url = URL(string: Configuration.oldBaseUrl)!
-        
+        let client = URLSessionClient()
         let documentsPath = NSSearchPathForDirectoriesInDomains(
             .documentDirectory,
             .userDomainMask,
@@ -27,20 +25,16 @@ class Network {
         
         let store = ApolloStore(cache: sqliteCache)
         
-        let configuration = URLSessionConfiguration.default
-        
-        configuration.httpAdditionalHeaders = ["Application-Token": Configuration.token]
-
-        return ApolloClient(
-            networkTransport: HTTPNetworkTransport(url: url, client: URLSessionClient(sessionConfiguration: configuration, callbackQueue: nil)),
-            store: store
-        )
+        let provider = NetworkInterceptorProvider(client: client, store: store)
+        let url = URL(string: Configuration.oldBaseUrl)!
+        let transport = RequestChainNetworkTransport(interceptorProvider: provider,
+                                                     endpointURL: url)
+        return ApolloClient(networkTransport: transport, store: store)
     }()
     
+    
     private(set) lazy var apolloNew: ApolloClient = {
-        
-        let url = URL(string: Configuration.baseUrl)!
-        
+        let client = URLSessionClient()
         let documentsPath = NSSearchPathForDirectoriesInDomains(
             .documentDirectory,
             .userDomainMask,
@@ -52,76 +46,73 @@ class Network {
         
         let store = ApolloStore(cache: sqliteCache)
         
-        let configuration = URLSessionConfiguration.default
-        
-        configuration.httpAdditionalHeaders = ["Application-Token": Configuration.token]
-        configuration.httpAdditionalHeaders = ["Authorization": DataManager.shared.token]
-
-        return ApolloClient(
-            networkTransport: HTTPNetworkTransport(url: url, client: URLSessionClient(sessionConfiguration: configuration, callbackQueue: nil)),
-            store: store
-        )
+        let provider = NewNetworkInterceptorProvider(client: client, store: store)
+        let url = URL(string: Configuration.baseUrl)!
+        let transport = RequestChainNetworkTransport(interceptorProvider: provider,
+                                                     endpointURL: url)
+        return ApolloClient(networkTransport: transport, store: store)
     }()
     
     func fetch<Query: GraphQLQuery>(query: Query, completion: @escaping (Result<GraphQLResult<Query.Data>, Error>) -> (), cachePolicy: CachePolicy = .fetchIgnoringCacheCompletely) {
         apolloNew.fetch(query: query,cachePolicy: cachePolicy) { result in
-          switch result {
+            switch result {
             case .failure(let error):
-                if let errorResponse = error as? GraphQLHTTPResponseError {
-                    if errorResponse.response.statusCode == 401 {
-                        self.refreshToken { isSucceeded in
-                            if isSucceeded {
-                                self.fetch(query: query, completion: completion)
-                            } else {
-                                completion(result)
-                            }
-                        }
-                    } else {
-                        completion(result)
-                    }
-                } else {
-                    completion(result)
-                }
+                //                if let errorResponse = error as? GraphQLHTTPResponseError {
+                //                    if errorResponse.response.statusCode == 401 {
+                //                        self.refreshToken { isSucceeded in
+                //                            if isSucceeded {
+                //                                self.fetch(query: query, completion: completion)
+                //                            } else {
+                //                                completion(result)
+                //                            }
+                //                        }
+                //                    } else {
+                completion(result)
+                //                    }
+                //                } else {
+                //                    completion(result)
+                //                }
             case .success(_ ):
-              completion(result)
-          }
+                completion(result)
+            }
         }
     }
     
     func perform<Mutation: GraphQLMutation>(mutation: Mutation, completion: @escaping (Result<GraphQLResult<Mutation.Data>, Error>) -> (), cachePolicy: CachePolicy = .fetchIgnoringCacheCompletely) {
         apolloNew.perform(mutation: mutation) { result in
-          switch result {
+            switch result {
             case .failure(let error):
-                if let errorResponse = error as? GraphQLHTTPResponseError {
-                    if errorResponse.response.statusCode == 401 {
-                        self.refreshToken { isSucceeded in
-                            if isSucceeded {
-                                self.perform(mutation: mutation, completion: completion)
-                            } else {
-                                completion(result)
-                            }
-                        }
-                    } else {
-                        completion(result)
-                    }
-                } else {
-                    completion(result)
-                }
+                //              if let errorResponse = error as? GraphQLResultError.error. {
+                //                    if errorResponse.res.statusCode == 401 {
+                //                        self.refreshToken { isSucceeded in
+                //                            if isSucceeded {
+                //                                self.perform(mutation: mutation, completion: completion)
+                //                            } else {
+                //                                completion(result)
+                //                            }
+                //                        }
+                //                    } else {
+                //                        completion(result)
+                //                    }
+                //                } else {
+                completion(result)
+                //                }
             case .success(_ ):
-              completion(result)
-          }
+                completion(result)
+            }
         }
     }
     
     func refreshToken(completion: @escaping (Bool) -> ()) {
         apolloNew.perform(mutation: GetRefreshTokenMutation(refreshToken: DataManager.shared.refreshToken)) { result in
-          switch result {
+            switch result {
             case .failure(_ ):
-              completion(true)
+                completion(true)
             case .success(_ ):
-              completion(false)
-          }
+                completion(false)
+            }
         }
     }
     
 }
+

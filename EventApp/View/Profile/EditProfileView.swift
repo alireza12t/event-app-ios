@@ -7,15 +7,29 @@
 //
 
 import SwiftUI
+import NavigationStack
 
 struct EditProfileView: View {
     
     @ObservedObject var viewModel = ProfileViewModel()
-    
+    @State private var isActive = false
+
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             HeaderView()
-            BodyView()
+            BodyView(viewModel: viewModel)
+            PushView(destination: ProfileTabBar(), isActive: $isActive) {
+                Button(action: {
+                    self.viewModel.updateProfile { isUpdated in
+                        if isUpdated {
+                            isActive = true
+                        }
+                    }
+                }, label: {
+                    RoundButton("confirm".localized(), width: UIScreen.main.bounds.width - 40, height: 62, alignment: .center)
+//                                .padding(.horizontal, 40)
+                })
+            }
             Spacer()
         }.onTapGesture {
             hideKeyboard()
@@ -36,7 +50,7 @@ struct EditProfileView: View {
                     .frame(width: imageHeight, height: imageHeight, alignment: .center)
                     .cornerRadius(10)
                     .padding(.top, -(imageHeight - 20))
-                Text("برای استفاده از قسمت نتورکینگ نیازه که اطلاعات خودتون رو تکمیل کنید تا با فردی مشابه خود ارتباط برقرار کنید.")
+                Text("networking_title".localized())
                     .multilineTextAlignment(.center)
                     .font(.footnote)
                     .padding(.horizontal, 60)
@@ -49,50 +63,44 @@ struct EditProfileView: View {
     // MARK: - Body
     struct BodyView: View {
                         
+        @ObservedObject var viewModel: ProfileViewModel
+        
         var body: some View {
             ScrollView(showsIndicators: false) {
-                VStack {
+                VStack(spacing: 10) {
                     HStack {
-                        Spacer()
+                        if Configuration.isLanguageRTL {
+                            Spacer()
+                        }
                         Text("interests".localized())
                             .font(.footnote)
                             .fontWeight(.bold)
-                            .multilineTextAlignment(.trailing)
+                        if !Configuration.isLanguageRTL {
+                            Spacer()
+                        }
                     }
-                    TagView(tags: [TagViewItem(title: "ff", isSelected: false), TagViewItem(title: "yyhuuuh", isSelected: false), TagViewItem(title: "kjhgdtfyughuihu", isSelected: true), TagViewItem(title: "nbyvyvuyv", isSelected: false)])
-                    inputFields()
-                    Button(action: {
-                        // MARK: Button Action
-                    }){
-                        Text("confirm".localized())
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 60)
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .padding(.top, 10)
+                    TagView(tags: viewModel.tags)
+                    inputFields(viewModel: viewModel)
                 }
+                .padding(.horizontal, 20)
             }
             .frame(maxWidth: .infinity)
-            .padding(.horizontal, 40)
         }
     }
     
     struct inputFields: View {
-        
-        @State var text = ""
-                
+                        
+        @ObservedObject var viewModel: ProfileViewModel
+
         var body: some View {
             VStack(spacing: 15) {
-                TextFieldWithImage(text: $text, placeholder: "name", imageName: "")
-                TextFieldWithImage(text: $text, placeholder: "job title", imageName: "")
-                TextFieldWithImage(text: $text, placeholder: "education", imageName: "")
-                TextFieldWithImage(text: $text, placeholder: "phone number", imageName: "")
-                TextFieldWithImage(text: $text, placeholder: "email", imageName: "")
-                TextView() {
-                    $0.text = "story".localized()
-                }
+                TextFieldWithImage(text: $viewModel.firstNameText, placeholder: "first_name".localized(), imageName: "")
+                TextFieldWithImage(text: $viewModel.LastNameText, placeholder: "last_name".localized(), imageName: "")
+                TextFieldWithImage(text: $viewModel.jobTitleText, placeholder: "job title".localized(), imageName: "")
+                TextFieldWithImage(text: $viewModel.educationFieldText, placeholder: "education".localized(), imageName: "")
+//                TextFieldWithImage(text: $viewModel.phoneNumberText, placeholder: "phone number".localized(), imageName: "")
+                TextFieldWithImage(text: $viewModel.emailText, placeholder: "email".localized(), imageName: "")
+                TextView(text: $viewModel.biographyText)
                 .font(.body)
                 .frame(height: 100)
                 .padding()
@@ -106,9 +114,9 @@ struct EditProfileView: View {
     }
 }
 
-struct EditProfileView_Previews: PreviewProvider {
+//struct EditProfileView_Previews: PreviewProvider {
     
-    static var previews: some View {
-        EditProfileView()
-    }
-}
+//    static var previews: some View {
+//        EditProfileView(, loginSetting: Binding<LoginSetting>)
+//    }
+//}

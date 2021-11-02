@@ -71,7 +71,7 @@ struct TagView: View {
 
     private func item(for text: String, isSelected: Bool) -> some View {
         Text(text)
-            .foregroundColor(isSelected ? Colors.primaryBarBackground : Colors.textColor)
+            .foregroundColor(isSelected ? Color.white : Colors.textColor)
             .padding()
             .lineLimit(1)
             .background(isSelected ? Colors.primaryBlue : Colors.primaryBarBackground)

@@ -184,3 +184,10 @@ query GetUserProfile{
         pk
     }
 }
+
+query GetInterestList{
+    interests {
+      id,
+      name
+    }
+}

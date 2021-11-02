@@ -59,3 +59,9 @@ struct InterestType: Codable, Hashable {
         ]
     }
 }
+
+struct AllInterests: Decodable {
+    
+    var interests: [InterestType]?
+    var errors: ErrorModel?
+}

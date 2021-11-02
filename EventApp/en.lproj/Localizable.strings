@@ -59,3 +59,13 @@
 "not_found_chat" = "Sorry, no one was found with your interests. Please try again.";
 "search_person_title" = "Search Person";
 "search_person_subtitle" = "Finding someone with common interest for talking";
+"confirm" = "Confirm";
+"networking_title" = "To use the networking section, you need to complete your information to communicate with someone similar to you.";
+"interests" = "Interests";
+"first_name" = "First Name";
+"last_name" = "Last Name";
+"job title" = "Job Title";
+"education" = "Education";
+"phone number" = "Phone Number";
+"email" = "Email";
+"my ted story" = "My Ted Story";

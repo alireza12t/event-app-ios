@@ -17,40 +17,46 @@ struct LoginSetting {
     var phoneNumber: String = ""
     var loginToken: String = ""
     var token: String = DataManager.shared.token
-    var isProfileFilled: Bool = false
 }
 
 struct ProfileTabBar: View {
     
+    @ObservedObject var viewModel = ProfileViewModel()
     @ObservedObject var userSettings = UserSettings()
     @State private var selectedTab: Int = 1
-
+    
     var body: some View {
-//        if userSettings.loginSetting.token.isEmpty {
-//            if userSettings.loginSetting.loginToken.isEmpty {
-//                PhoneNumberView(loginSetting: $userSettings.loginSetting)
-//            } else {
-//                OTPView(loginSetting: $userSettings.loginSetting)
-//            }
-//        } else {
-//            if userSettings.loginSetting.isProfileFilled {
-            NavigationStackView(transitionType: .custom(.scale)) {
-                tabBarView
+        ZStack {
+            if userSettings.loginSetting.token.isEmpty {
+                if userSettings.loginSetting.loginToken.isEmpty {
+                    PhoneNumberView(loginSetting: $userSettings.loginSetting)
+                } else {
+                    OTPView(loginSetting: $userSettings.loginSetting)
+                }
+            } else {
+                
+                if self.viewModel.statusView == .loading {
+                    Indicator()
+                } else {
+                    if !viewModel.doesNeedProfileUpdate {
+                        NavigationStackView(transitionType: .custom(.scale)) {
+                            tabBarView
+                        }
+                    } else {
+                        NavigationStackView(transitionType: .custom(.scale)) {
+                            EditProfileView(viewModel: viewModel)
+                        }
+                    }
+                }
             }
-//            } else {
-//                EditProfileView()
-//            }
-//            MatchingView()
-//            LoadingView()
-//        }
+        }
     }
 }
 
 extension ProfileTabBar {
     private var tabBarView: some View {
         GeometryReader { geo in
-            VStack(alignment: .leading, spacing: 20){
-//                NavigationView {
+            VStack(spacing: 20){
                 ScrollableTabView(activeIdx: $selectedTab, dataSet: ["Chats", "YourProfile"])
                     .frame(width: geo.size.width, height: 40)
                 if selectedTab == 0 {
@@ -58,13 +64,11 @@ extension ProfileTabBar {
                         .frame(width: geo.size.width, height: geo.size.height - 90)
                 } else {
                     ProfileView(isMyProfile: true, userId: "!")
-                        .frame(width: geo.size.width, height: geo.size.height - 90)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: geo.size.height - 90)
                 }
                 Spacer()
-                //        }
-//                }
             }
-            .padding()
         }
     }
 }

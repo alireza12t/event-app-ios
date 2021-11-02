@@ -5,10 +5,11 @@ target 'EventApp' do
   use_frameworks!
 
   # Pods for Event App
-  pod 'Apollo', '~> 0.32.1'
-  pod 'Apollo/SQLite', '~> 0.32.1'
+  pod 'Apollo'
+  pod 'Apollo/SQLite'
   pod 'Kingfisher/SwiftUI', '~> 5.15.5'
   pod 'lottie-ios'
   pod 'NavigationStack'
+  pod 'netfox'
   
 end

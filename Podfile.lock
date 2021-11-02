@@ -1,8 +1,8 @@
 PODS:
-  - Apollo (0.32.1):
-    - Apollo/Core (= 0.32.1)
-  - Apollo/Core (0.32.1)
-  - Apollo/SQLite (0.32.1):
+  - Apollo (0.49.1):
+    - Apollo/Core (= 0.49.1)
+  - Apollo/Core (0.49.1)
+  - Apollo/SQLite (0.49.1):
     - Apollo/Core
     - SQLite.swift (~> 0.12.2)
   - Kingfisher/Core (5.15.8)
@@ -10,16 +10,18 @@ PODS:
     - Kingfisher/Core
   - lottie-ios (3.2.3)
   - NavigationStack (1.0.4)
+  - netfox (1.19.0)
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
   - SQLite.swift/standard (0.12.2)
 
 DEPENDENCIES:
-  - Apollo (~> 0.32.1)
-  - Apollo/SQLite (~> 0.32.1)
+  - Apollo
+  - Apollo/SQLite
   - Kingfisher/SwiftUI (~> 5.15.5)
   - lottie-ios
   - NavigationStack
+  - netfox
 
 SPEC REPOS:
   trunk:
@@ -27,15 +29,17 @@ SPEC REPOS:
     - Kingfisher
     - lottie-ios
     - NavigationStack
+    - netfox
     - SQLite.swift
 
 SPEC CHECKSUMS:
-  Apollo: 55d9a99774dd06dd6cc865d16a6c13d0d6804211
+  Apollo: 69f35ed8f8d87c32ef89e99e4f8c682399e9192b
   Kingfisher: a3c03d702433fa6cfedabb2bddbe076fb8f2e902
   lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   NavigationStack: c2fb4c71b89659481e8e0dfb20e533681dce084f
+  netfox: efeec1d23406df6cd605212f09a40957bb5654eb
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
 
-PODFILE CHECKSUM: 7e42927fee7e9c3580a29fa2bdc456e89edee15a
+PODFILE CHECKSUM: 019750e57084a54d78e624362d69070c1b74bcd1
 
 COCOAPODS: 1.11.2

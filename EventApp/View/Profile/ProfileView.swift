@@ -28,7 +28,6 @@ struct ProfileView: View {
         let imageHeight = width/3
             if self.viewModel.statusView == .complete {
                 ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: 20) {
                         VStack {
                             LinearGradient(gradient: Gradient(colors: [.red, .red, .red.opacity(0.5)]), startPoint: .leading, endPoint: .trailing)
                                 .frame(width: width, height: imageHeight - 20)
@@ -46,7 +45,8 @@ struct ProfileView: View {
                                 .font(.footnote)
                                 .bold()
                             
-                            TagView(tags: viewModel.interestList.compactMap({$0.name}))
+                            TagView(tags: viewModel.interestList.compactMap({TagViewItem(title: $0.name, isSelected: true)}))
+                                .disabled(true)
                             
                             HStack {
                                 Text("Job Title".localized() + ": ")
@@ -81,7 +81,7 @@ struct ProfileView: View {
                             HStack(alignment: .center, spacing: 20) {
                                 HStack {
                                     Image(systemName: "phone")
-                                        .foregroundColor(.black)
+                                        .foregroundColor(Colors.textColor)
                                     
                                     LocalizedNumberText(viewModel.phoneNumber)
                                         .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
@@ -90,7 +90,7 @@ struct ProfileView: View {
                                 
                                 HStack {
                                     Image(systemName: "envelope")
-                                        .foregroundColor(.black)
+                                        .foregroundColor(Colors.textColor)
                                     Text(viewModel.email)
                                         .customFont(name: Configuration.shabnam, style: .subheadline, weight: .regular)
                                 }
@@ -109,8 +109,7 @@ struct ProfileView: View {
                                 })
                             }
                         }
-                        .padding( 40)
-                    }
+                        .padding(20)
                     
                 }
             }else if self.viewModel.statusView == .loading{

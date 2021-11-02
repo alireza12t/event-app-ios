@@ -67,14 +67,13 @@ struct OTPView: View {
                     RoundButton("Register".localized(), width: geo.size.width - 40, height: 62, alignment: .center)
                         .padding(.bottom, 40)
                         .onTapGesture(count: 1, perform: {
-                            viewModel.login(token: self.loginSetting.loginToken) { (token, isProfileFilled) in
+                            viewModel.login(token: self.loginSetting.loginToken) { (token) in
                                 if token.isEmpty {
                                     presentAlert = true
                                 } else {
                                     DataManager.shared.phoneNumber = loginSetting.phoneNumber
                                     loginSetting.token = token
                                 }
-                                loginSetting.isProfileFilled = isProfileFilled
                             }
                         })
                 }

@@ -15,6 +15,6 @@ struct LocalizedNumberText: View {
         self.text = text
     }
     var body: some View {
-        Text(text.localized().normalNumber)
+        Text(text.normalNumber)
     }
 }

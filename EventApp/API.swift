@@ -3553,3 +3553,100 @@ public final class GetUserProfileQuery: GraphQLQuery {
     }
   }
 }
+
+public final class GetInterestListQuery: GraphQLQuery {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    query GetInterestList {
+      interests {
+        __typename
+        id
+        name
+      }
+    }
+    """
+
+  public let operationName: String = "GetInterestList"
+
+  public init() {
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Query"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("interests", type: .list(.object(Interest.selections))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(interests: [Interest?]? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "interests": interests.flatMap { (value: [Interest?]) -> [ResultMap?] in value.map { (value: Interest?) -> ResultMap? in value.flatMap { (value: Interest) -> ResultMap in value.resultMap } } }])
+    }
+
+    public var interests: [Interest?]? {
+      get {
+        return (resultMap["interests"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Interest?] in value.map { (value: ResultMap?) -> Interest? in value.flatMap { (value: ResultMap) -> Interest in Interest(unsafeResultMap: value) } } }
+      }
+      set {
+        resultMap.updateValue(newValue.flatMap { (value: [Interest?]) -> [ResultMap?] in value.map { (value: Interest?) -> ResultMap? in value.flatMap { (value: Interest) -> ResultMap in value.resultMap } } }, forKey: "interests")
+      }
+    }
+
+    public struct Interest: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["InterestType"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("name", type: .nonNull(.scalar(String.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, name: String) {
+        self.init(unsafeResultMap: ["__typename": "InterestType", "id": id, "name": name])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var name: String {
+        get {
+          return resultMap["name"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "name")
+        }
+      }
+    }
+  }
+}

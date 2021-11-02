@@ -121,6 +121,7 @@
 		BB7D69A926C539A70038857F /* cat.json in Resources */ = {isa = PBXBuildFile; fileRef = BB7D69A826C539A70038857F /* cat.json */; };
 		BB7D69AC26C53CD20038857F /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D69AB26C53CD20038857F /* LoadingView.swift */; };
 		BBC6F47C26D0D48100CAEC8A /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC6F47B26D0D48100CAEC8A /* RoundButton.swift */; };
+		BBDA23912731B792009A5AEC /* NetworkInterceptorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDA23902731B792009A5AEC /* NetworkInterceptorProvider.swift */; };
 		BBE4EE5426C50E9500176DFA /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4EE5326C50E9500176DFA /* DataManager.swift */; };
 		BBE4EE5626C5105200176DFA /* PhoneNumberViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4EE5526C5105200176DFA /* PhoneNumberViewModel.swift */; };
 		BBE4EE5A26C51D9B00176DFA /* OTPViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4EE5926C51D9B00176DFA /* OTPViewModel.swift */; };
@@ -285,6 +286,7 @@
 		BB7D69A826C539A70038857F /* cat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cat.json; sourceTree = "<group>"; };
 		BB7D69AB26C53CD20038857F /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		BBC6F47B26D0D48100CAEC8A /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+		BBDA23902731B792009A5AEC /* NetworkInterceptorProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInterceptorProvider.swift; sourceTree = "<group>"; };
 		BBE4EE5326C50E9500176DFA /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		BBE4EE5526C5105200176DFA /* PhoneNumberViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewModel.swift; sourceTree = "<group>"; };
 		BBE4EE5926C51D9B00176DFA /* OTPViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewModel.swift; sourceTree = "<group>"; };
@@ -678,6 +680,7 @@
 			isa = PBXGroup;
 			children = (
 				6D460C6C24DE7F3500F50DAF /* Network.swift */,
+				BBDA23902731B792009A5AEC /* NetworkInterceptorProvider.swift */,
 				E837435E24FFF327009FEB5B /* XException.swift */,
 			);
 			path = Service;
@@ -984,6 +987,7 @@
 				BB38ACFC2719EAF80059067A /* MatchHistoryView.swift in Sources */,
 				6DD9718A24F8D2C20044D596 /* NewsViewModel.swift in Sources */,
 				0BB375CF2719C9560043AF24 /* TagView.swift in Sources */,
+				BBDA23912731B792009A5AEC /* NetworkInterceptorProvider.swift in Sources */,
 				BB40FFF526D061FF00704962 /* LocalizedNumberText.swift in Sources */,
 				6DE7941124F939A500CEEE0E /* Album.swift in Sources */,
 				6D3B49302528BBD20002EBF8 /* SpeakerDetailView.swift in Sources */,
