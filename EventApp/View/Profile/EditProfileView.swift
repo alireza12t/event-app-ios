@@ -11,7 +11,7 @@ import NavigationStack
 
 struct EditProfileView: View {
     
-    @ObservedObject var viewModel = ProfileViewModel()
+    @ObservedObject var viewModel = ProfileViewModel(isEditProfile: true)
     @State private var isActive = false
 
     var body: some View {

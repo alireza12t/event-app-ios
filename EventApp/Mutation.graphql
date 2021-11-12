@@ -39,8 +39,21 @@ mutation UpdateProfile($input: ProfileMutationInput!) {
   updateProfile(
     input: $input
   ) {
+    errors {
+        messages
+    }
     user {
         id
+    }
+  }
+}
+
+mutation NewMatch {
+  matchmakingRequest {
+    success
+    errors
+    request {
+      id
     }
   }
 }

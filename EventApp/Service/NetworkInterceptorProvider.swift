@@ -31,8 +31,10 @@ class BearerInterceptor: ApolloInterceptor {
         request: HTTPRequest<Operation>,
         response: HTTPResponse<Operation>?,
         completion: @escaping (Swift.Result<GraphQLResult<Operation.Data>, Error>) -> Void) {
-            request.addHeader(name: "Application-Token", value: Configuration.token)
-
+            if !DataManager.shared.token.isEmpty {
+                request.addHeader(name: "Authorization", value: "JWT \(DataManager.shared.token)")
+            }
+            
             print("request :\(request)")
             print("response :\(String(describing: response))")
             

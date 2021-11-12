@@ -191,3 +191,15 @@ query GetInterestList{
       name
     }
 }
+
+query CheckMatching {
+  matchmakingRequest {
+    id
+    match {
+      conversationId
+      parties {
+        id
+      }
+    }
+  }
+}

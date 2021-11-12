@@ -34,7 +34,6 @@ struct ProfileTabBar: View {
                     OTPView(loginSetting: $userSettings.loginSetting)
                 }
             } else {
-                
                 if self.viewModel.statusView == .loading {
                     Indicator()
                 } else {

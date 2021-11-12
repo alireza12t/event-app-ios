@@ -69,8 +69,11 @@ class ProfileViewModel: ObservableObject {
         })
     }
     
-    init() {
-        setup()
+    init(isEditProfile: Bool = false) {
+        if !isEditProfile {
+            setup()
+            getInterests()
+        }
     }
     
     func setup() {
@@ -95,7 +98,6 @@ class ProfileViewModel: ObservableObject {
             self.educationFieldText = repositories.educationField ?? ""
             self.jobTitleText = repositories.jobTitle ?? ""
             self.biographyText = repositories.biography ?? ""
-            self.getInterests()
         }
     }
     
