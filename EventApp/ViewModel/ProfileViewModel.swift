@@ -90,6 +90,7 @@ class ProfileViewModel: ObservableObject {
                 self.statusView = .error
                 return
             }
+            self.statusView = .complete
             self.repositories = repositories
             self.doesNeedProfileUpdate = repositories.doesNeedProfileUpdate ?? true
             self.emailText = repositories.email ?? ""
