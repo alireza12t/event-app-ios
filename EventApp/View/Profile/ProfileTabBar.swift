@@ -21,9 +21,15 @@ struct LoginSetting {
 
 struct ProfileTabBar: View {
     
-    @ObservedObject var viewModel = ProfileViewModel()
+    @ObservedObject var viewModel = ProfileViewModel(shouldSetup: false)
     @ObservedObject var userSettings = UserSettings()
     @State private var selectedTab: Int = 1
+    
+    init() {
+        if !userSettings.loginSetting.token.isEmpty && viewModel.repositories == nil {
+            viewModel.setup()
+        }
+    }
     
     var body: some View {
         ZStack {
@@ -39,7 +45,21 @@ struct ProfileTabBar: View {
                 } else {
                     if !viewModel.doesNeedProfileUpdate {
                         NavigationStackView(transitionType: .custom(.scale)) {
-                            tabBarView
+                            GeometryReader { geo in
+                                VStack(spacing: 20){
+                                    ScrollableTabView(activeIdx: $selectedTab, dataSet: ["Chats", "YourProfile"])
+                                        .frame(width: geo.size.width, height: 40)
+                                    if selectedTab == 0 {
+                                        ChatHistoryView()
+                                            .frame(width: geo.size.width, height: geo.size.height - 90)
+                                    } else {
+                                        ProfileView(viewModel: viewModel, isMyProfile: true, userId: "!")
+                                            .frame(maxWidth: .infinity)
+                                            .frame(height: geo.size.height - 90)
+                                    }
+                                    Spacer()
+                                }
+                            }
                         }
                     } else {
                         NavigationStackView(transitionType: .custom(.scale)) {
@@ -47,26 +67,6 @@ struct ProfileTabBar: View {
                         }
                     }
                 }
-            }
-        }
-    }
-}
-
-extension ProfileTabBar {
-    private var tabBarView: some View {
-        GeometryReader { geo in
-            VStack(spacing: 20){
-                ScrollableTabView(activeIdx: $selectedTab, dataSet: ["Chats", "YourProfile"])
-                    .frame(width: geo.size.width, height: 40)
-                if selectedTab == 0 {
-                    ChatHistoryView()
-                        .frame(width: geo.size.width, height: geo.size.height - 90)
-                } else {
-                    ProfileView(isMyProfile: true, userId: "!")
-                        .frame(maxWidth: .infinity)
-                        .frame(height: geo.size.height - 90)
-                }
-                Spacer()
             }
         }
     }

@@ -12,6 +12,8 @@ import Apollo
 class Network {
     static let shared = Network()
     
+    static var isRefreshing: Bool = false
+    
     private(set) lazy var apollo: ApolloClient = {
         let client = URLSessionClient()
         let documentsPath = NSSearchPathForDirectoriesInDomains(
@@ -74,7 +76,7 @@ class Network {
                             completion(result)
                         }
                     } else {
-                        
+                        completion(result)
                     }
                 } else {
                     completion(result)
@@ -103,11 +105,13 @@ class Network {
                     if let errors = graphQLResult.errors {
                         print("Errors => ", errors)
                         if errors.compactMap({$0.message}).joined().contains("Signature") {
-                            self.refreshToken { isSucceeded in
-                                if isSucceeded {
-                                    self.perform(mutation: mutation, shouldRetry: false, completion: completion)
-                                } else {
-                                    completion(result)
+                            if !Network.isRefreshing {
+                                self.refreshToken { isSucceeded in
+                                    if isSucceeded {
+                                        self.perform(mutation: mutation, shouldRetry: false, completion: completion)
+                                    } else {
+                                        completion(result)
+                                    }
                                 }
                             }
                         } else {
@@ -127,22 +131,22 @@ class Network {
     }
     
     func refreshToken(completion: @escaping (Bool) -> ()) {
-        apolloNew.perform(mutation: GetRefreshTokenMutation(refreshToken: DataManager.shared.refreshToken)) { result in
-            switch result {
-            case .failure(_ ):
-                completion(false)
-            case .success(let data):
-                let model = data.data?.refreshToken
-                if let token = model?.token,
-                   let refreshToken = model?.refreshToken {
-                    DataManager.shared.refreshToken = refreshToken
-                    DataManager.shared.token = token
-                    completion(true)
-                } else {
+            apolloNew.perform(mutation: GetRefreshTokenMutation(refreshToken: DataManager.shared.refreshToken)) { result in
+                switch result {
+                case .failure(_ ):
                     completion(false)
+                case .success(let data):
+                    let model = data.data?.refreshToken
+                    if let token = model?.token,
+                       let refreshToken = model?.refreshToken {
+                        DataManager.shared.refreshToken = refreshToken
+                        DataManager.shared.token = token
+                        completion(true)
+                    } else {
+                        completion(false)
+                    }
                 }
             }
-        }
     }
     
 }

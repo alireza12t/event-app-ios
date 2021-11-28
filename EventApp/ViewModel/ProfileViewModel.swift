@@ -69,10 +69,12 @@ class ProfileViewModel: ObservableObject {
         })
     }
     
-    init(isEditProfile: Bool = false) {
-        if !isEditProfile {
-            setup()
-            getInterests()
+    init(shouldSetup: Bool = true) {
+        if shouldSetup && profile?.id == nil {
+                setup()
+                getInterests()
+        } else {
+            statusView = .complete
         }
     }
     
@@ -91,6 +93,7 @@ class ProfileViewModel: ObservableObject {
                 return
             }
             self.statusView = .complete
+            profile = repositories
             self.repositories = repositories
             self.doesNeedProfileUpdate = repositories.doesNeedProfileUpdate ?? true
             self.emailText = repositories.email ?? ""

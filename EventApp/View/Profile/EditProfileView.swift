@@ -11,9 +11,13 @@ import NavigationStack
 
 struct EditProfileView: View {
     
-    @ObservedObject var viewModel = ProfileViewModel(isEditProfile: true)
+    @ObservedObject var viewModel = ProfileViewModel(shouldSetup: false)
     @State private var isActive = false
 
+    init(viewModel: ProfileViewModel) {
+        self.viewModel = viewModel
+    }
+    
     var body: some View {
         VStack(spacing: 20) {
             HeaderView()

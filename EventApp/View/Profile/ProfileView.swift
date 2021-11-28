@@ -11,14 +11,19 @@ import NavigationStack
 
 struct ProfileView: View {
     
-    @ObservedObject var viewModel = ProfileViewModel()
+    @ObservedObject var viewModel = ProfileViewModel(shouldSetup: false)
     @State private var isActive = false
 
     var userId: String
     var leadingTrailingPadding: CGFloat = 40
     var isMyProfile: Bool = true
     
-    init(isMyProfile: Bool, userId: String) {
+    init(viewModel: ProfileViewModel, isMyProfile: Bool, userId: String) {
+        if viewModel.repositories?.id == nil {
+            self.viewModel = ProfileViewModel()
+        } else {
+            self.viewModel = viewModel
+        }
         self.userId = userId
         self.isMyProfile = isMyProfile
     }
@@ -97,7 +102,7 @@ struct ProfileView: View {
                             }
                             .padding()
                             
-                            PushView(destination: EditProfileView(), isActive: $isActive) {
+                            PushView(destination: EditProfileView(viewModel: viewModel), isActive: $isActive) {
                                 Button(action: {
                                     self.isActive.toggle()
                                 }, label: {
@@ -125,8 +130,8 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView(isMyProfile: false, userId: "1")
+        ProfileView(viewModel: ProfileViewModel(), isMyProfile: false, userId: "1")
             .previewDevice("iPhone 12 mini")
-        ProfileView(isMyProfile: true, userId: "1")
+        ProfileView(viewModel: ProfileViewModel(), isMyProfile: true, userId: "1")
     }
 }

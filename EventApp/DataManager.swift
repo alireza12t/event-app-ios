@@ -8,6 +8,9 @@
 
 import Foundation
 
+
+var profile: ProfileData!
+
 class DataManager {
     
     enum UserDefaultKeys: String {
