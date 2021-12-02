@@ -112,7 +112,7 @@ struct ChatHistoryCell: View {
     let width = UIScreen.main.bounds.width / 6
     var body: some View {
         VStack {
-            KFImage(URL(string: profile.image ?? ""))
+            KFImage(URL(string: ""))
                 .placeholder {
                     ImagePlaceholder()
                 }

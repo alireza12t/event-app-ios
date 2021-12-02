@@ -27,8 +27,12 @@ class ProfilleRepository {
             case .failure(let error):
                 completion(nil, XException(message: error.localizedDescription, code: 0))
             case .success(let data):
-                let model = data.data?.decodeModel(type: ProfileData.self)
-                completion(model, nil)
+                if let me = data.data?.me {
+                    let model = ProfileData(dateJoined: me.dateJoined, isStaff: me.isStaff, firstName: me.firstName, lastName: me.lastName, email: me.email, phone: me.phone, jobTitle: me.jobTitle, educationField: me.educationField, biography: me.biography, id: me.id, interests: me.interests.compactMap({InterestType(id: $0.id, name: $0.name)}), pk: me.pk, doesNeedProfileUpdate: me.doesNeedProfileUpdate)
+                    completion(model, nil)
+                } else {
+                    completion(nil, nil)
+                }
             }
         }
     }

@@ -13,12 +13,14 @@ struct ProfileView: View {
     
     @ObservedObject var viewModel = ProfileViewModel(shouldSetup: false)
     @State private var isActive = false
+    @Binding var loginSetting: LoginSetting
 
     var userId: String
     var leadingTrailingPadding: CGFloat = 40
     var isMyProfile: Bool = true
     
-    init(viewModel: ProfileViewModel, isMyProfile: Bool, userId: String) {
+    init(viewModel: ProfileViewModel, isMyProfile: Bool, userId: String, loginSetting: Binding<LoginSetting>) {
+        self._loginSetting = loginSetting
         if viewModel.repositories?.id == nil {
             self.viewModel = ProfileViewModel()
         } else {
@@ -102,8 +104,11 @@ struct ProfileView: View {
                             }
                             .padding()
                             
-                            PushView(destination: EditProfileView(viewModel: viewModel), isActive: $isActive) {
+                            PushView(destination: EditProfileView(viewModel: viewModel, loginSetting: $loginSetting), isActive: $isActive) {
                                 Button(action: {
+                                    if isMyProfile {
+                                        loginSetting.isEditing = true
+                                    }
                                     self.isActive.toggle()
                                 }, label: {
                                     if isMyProfile {
@@ -130,8 +135,8 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView(viewModel: ProfileViewModel(), isMyProfile: false, userId: "1")
+        ProfileView(viewModel: ProfileViewModel(), isMyProfile: false, userId: "1", loginSetting: .constant(LoginSetting()))
             .previewDevice("iPhone 12 mini")
-        ProfileView(viewModel: ProfileViewModel(), isMyProfile: true, userId: "1")
+        ProfileView(viewModel: ProfileViewModel(), isMyProfile: true, userId: "1", loginSetting: .constant(LoginSetting()))
     }
 }

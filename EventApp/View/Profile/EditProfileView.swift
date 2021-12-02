@@ -13,9 +13,11 @@ struct EditProfileView: View {
     
     @ObservedObject var viewModel = ProfileViewModel(shouldSetup: false)
     @State private var isActive = false
+    @Binding var loginSetting: LoginSetting
 
-    init(viewModel: ProfileViewModel) {
+    init(viewModel: ProfileViewModel, loginSetting: Binding<LoginSetting>) {
         self.viewModel = viewModel
+        self._loginSetting = loginSetting
     }
     
     var body: some View {
@@ -26,12 +28,12 @@ struct EditProfileView: View {
                 Button(action: {
                     self.viewModel.updateProfile { isUpdated in
                         if isUpdated {
+                            loginSetting.isEditing = false
                             isActive = true
                         }
                     }
                 }, label: {
                     RoundButton("confirm".localized(), width: UIScreen.main.bounds.width - 40, height: 62, alignment: .center)
-//                                .padding(.horizontal, 40)
                 })
             }
             Spacer()
@@ -102,7 +104,6 @@ struct EditProfileView: View {
                 TextFieldWithImage(text: $viewModel.LastNameText, placeholder: "last_name".localized(), imageName: "")
                 TextFieldWithImage(text: $viewModel.jobTitleText, placeholder: "job title".localized(), imageName: "")
                 TextFieldWithImage(text: $viewModel.educationFieldText, placeholder: "education".localized(), imageName: "")
-//                TextFieldWithImage(text: $viewModel.phoneNumberText, placeholder: "phone number".localized(), imageName: "")
                 TextFieldWithImage(text: $viewModel.emailText, placeholder: "email".localized(), imageName: "")
                 TextView(text: $viewModel.biographyText)
                 .font(.body)

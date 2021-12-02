@@ -24,7 +24,7 @@ struct ProfileData: Codable, Hashable {
     var isStaff, isActive: Bool?
     var firstName, lastName, email, phone, jobTitle, educationField, biography, id: String?
     var interests: [InterestType]?
-    var image: String?
+//    var image: String?
     var pk: Int?
     var doesNeedProfileUpdate: Bool?
     

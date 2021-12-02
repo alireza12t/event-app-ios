@@ -17,6 +17,7 @@ struct LoginSetting {
     var phoneNumber: String = ""
     var loginToken: String = ""
     var token: String = DataManager.shared.token
+    var isEditing: Bool = false
 }
 
 struct ProfileTabBar: View {
@@ -43,7 +44,7 @@ struct ProfileTabBar: View {
                 if self.viewModel.statusView == .loading {
                     Indicator()
                 } else {
-                    if !viewModel.doesNeedProfileUpdate {
+                    if !viewModel.doesNeedProfileUpdate && !userSettings.loginSetting.isEditing {
                         NavigationStackView(transitionType: .custom(.scale)) {
                             GeometryReader { geo in
                                 VStack(spacing: 20){
@@ -53,7 +54,7 @@ struct ProfileTabBar: View {
                                         ChatHistoryView()
                                             .frame(width: geo.size.width, height: geo.size.height - 90)
                                     } else {
-                                        ProfileView(viewModel: viewModel, isMyProfile: true, userId: "!")
+                                        ProfileView(viewModel: viewModel, isMyProfile: true, userId: "!", loginSetting: $userSettings.loginSetting)
                                             .frame(maxWidth: .infinity)
                                             .frame(height: geo.size.height - 90)
                                     }
@@ -62,9 +63,9 @@ struct ProfileTabBar: View {
                             }
                         }
                     } else {
-                        NavigationStackView(transitionType: .custom(.scale)) {
-                            EditProfileView(viewModel: viewModel)
-                        }
+                            NavigationStackView(transitionType: .custom(.scale)) {
+                                EditProfileView(viewModel: viewModel, loginSetting: $userSettings.loginSetting)
+                            }
                     }
                 }
             }
